@@ -60,8 +60,25 @@ The proxy intercepts chat completion responses and processes reasoning tags:
 
 - Python 3.13 or higher
 - pip or uv package manager
+- Docker (optional, for containerized deployment)
 
-### Setup
+### Docker Deployment
+
+1. Build the Docker image:
+
+```bash
+docker build -t synthetic-thinking-proxy .
+```
+
+2. Run the container:
+
+```bash
+docker run -p 8000:8000 synthetic-thinking-proxy
+```
+
+The proxy will be available at `http://localhost:8000`
+
+### Local Development
 
 1. Clone the repository:
 
@@ -86,7 +103,32 @@ uv sync
 python main.py
 ```
 
+The proxy will start on `http://localhost:8000`
 The proxy will be available at `http://localhost:8000`
+
+### Docker Usage Examples
+
+For Docker deployments, you can test the proxy using curl against localhost:8000:
+
+```bash
+# Chat completions with reasoning processing
+curl -X POST http://localhost:8000/v1/chat/completions \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "hf:MiniMaxAI/MiniMax-M2",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What is 2+2?"
+      }
+    ]
+  }'
+
+# Transparent proxy for other endpoints
+curl -X GET http://localhost:8000/v1/models \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
 
 ## Usage
 
@@ -199,6 +241,7 @@ PORT=8000
 synthetic-thinking/
 ├── main.py                 # FastAPI application with proxy logic
 ├── pyproject.toml          # Python project configuration and dependencies
+├── Dockerfile              # Docker container configuration
 ├── .env                    # Environment variables (create this)
 ├── .env.example            # Environment variables template
 ├── .gitignore              # Git ignore rules
