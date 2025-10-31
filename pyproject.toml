@@ -1,0 +1,12 @@
+[project]
+name = "synthetic-thinking"
+version = "0.1.0"
+description = "Fixes Synthetic API"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi>=0.104.0",
+    "httpx>=0.25.0",
+    "uvicorn[standard]>=0.24.0",
+    "python-multipart>=0.0.6",
+]
